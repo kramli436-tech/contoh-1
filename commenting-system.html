@@ -1,20 +1,154 @@
+<!DOCTYPE html>
+<html lang="id">
 <head>
-  <!-- ... -->
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/@waline/client@v3/dist/waline.css"
-  />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Form Komentar</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f6f8;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px;
+    }
+
+    .comment-box {
+      background: #fff;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 450px;
+    }
+
+    .comment-box h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .comment-box input, 
+    .comment-box textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    .comment-box button {
+      width: 100%;
+      padding: 10px;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 15px;
+      transition: background 0.3s;
+    }
+
+    .comment-box button:hover {
+      background: #43a047;
+    }
+
+    .comments-display {
+      margin-top: 30px;
+      max-width: 450px;
+      width: 100%;
+    }
+
+    .comment {
+      background: #fff;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    }
+
+    .comment h4 {
+      margin: 0 0 5px 0;
+      color: #333;
+    }
+
+    .comment p {
+      margin: 0;
+      font-size: 14px;
+      color: #555;
+    }
+
+    .comment small {
+      display: block;
+      margin-top: 5px;
+      color: #888;
+      font-size: 12px;
+    }
+  </style>
 </head>
 <body>
-  <!-- ... -->
-  <div id="waline"></div>
-  <script type="module">
-    import { init } from 'https://unpkg.com/@waline/client@v3/dist/waline.js';
 
-    init({
-      el: '#waline',
-      serverURL: 'https://contoh-1-gold.vercel.app/',
-      lang: 'en',
+  <div class="comment-box">
+    <h2>Tinggalkan Komentar</h2>
+    <form id="commentForm">
+      <input type="text" id="name" placeholder="Nama Anda" required>
+      <textarea id="comment" rows="4" placeholder="Tulis komentar Anda..." required></textarea>
+      <button type="submit">Kirim Komentar</button>
+    </form>
+  </div>
+
+  <div class="comments-display" id="commentsDisplay">
+    <h3>Komentar:</h3>
+  </div>
+
+  <script>
+    const form = document.getElementById('commentForm');
+    const commentsDisplay = document.getElementById('commentsDisplay');
+
+    // Fungsi untuk menampilkan semua komentar
+    function displayComments() {
+      const savedComments = JSON.parse(localStorage.getItem('comments')) || [];
+      commentsDisplay.innerHTML = '<h3>Komentar:</h3>';
+      savedComments.forEach(c => {
+        const commentElement = document.createElement('div');
+        commentElement.classList.add('comment');
+        commentElement.innerHTML = `
+          <h4>${c.name}</h4>
+          <p>${c.text}</p>
+          <small>Dikirim pada: ${c.time}</small>
+        `;
+        commentsDisplay.appendChild(commentElement);
+      });
+    }
+
+    // Jalankan saat halaman dibuka
+    displayComments();
+
+    // Tambah komentar baru
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const name = document.getElementById('name').value.trim();
+      const text = document.getElementById('comment').value.trim();
+
+      if (name && text) {
+        const newComment = {
+          name: name,
+          text: text,
+          time: new Date().toLocaleString('id-ID')
+        };
+
+        const savedComments = JSON.parse(localStorage.getItem('comments')) || [];
+        savedComments.push(newComment);
+        localStorage.setItem('comments', JSON.stringify(savedComments));
+
+        displayComments();
+        form.reset();
+      }
     });
   </script>
+
 </body>
+</html>
