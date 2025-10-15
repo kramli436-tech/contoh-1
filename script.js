@@ -1,3 +1,6 @@
+// ======================================================
+//  LILEVY.AE FINAL SCRIPT — NAVBAR, DARK MODE, MUSIC, ANIMATION
+// ======================================================
 (() => {
   'use strict';
 
@@ -181,7 +184,7 @@
   });
 
   // ======================================================
-  //  BACKGROUND MUSIC — FADE-IN + MUTE TOGGLE
+  //  BACKGROUND MUSIC — FADE-IN + MUTE + AUTOPLAY FIX
   // ======================================================
   (function musicControl() {
     if (!bgMusic) return;
@@ -215,6 +218,18 @@
         bgMusic.muted = !bgMusic.muted;
         musicToggle.innerHTML = bgMusic.muted ? '<span>🔇</span>' : '<span>🔊</span>';
       });
+    }
+
+    // AUTOPLAY FIX UNTUK HP: aktif setelah tap pertama
+    document.addEventListener('touchstart', enableAudioOnce, { once: true });
+    document.addEventListener('click', enableAudioOnce, { once: true });
+
+    function enableAudioOnce() {
+      if (bgMusic && bgMusic.paused) {
+        bgMusic.play().catch(() => {});
+        bgMusic.muted = false;
+        if (musicToggle) musicToggle.innerHTML = '<span>🔊</span>';
+      }
     }
   })();
 
