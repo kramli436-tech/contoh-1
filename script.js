@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* === KOMENTAR KE GOOGLE SHEETS (FORMDATA) === */
-  const scriptURL = "https://script.google.com/macros/s/AKfycbwRTHtjPrD9SDY7YGYLYh3fN2ukFXy4IaQa8D0NFr8DHedpCyofkaS0G9F6O3cD5OHY/exec";
+  const scriptURL = https://script.google.com/macros/s/AKfycbwshma7gbrVmNkuav0867G7jrWbQ_EN_SAnJjluzJhpPzjVRu6U3qMLYitGumQH1WPa/exec";
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -131,4 +131,5 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
+
 
